@@ -55,7 +55,7 @@ tags = {
 
 ## State Management
 
-- Backend: S3 bucket with versioning + DynamoDB for locking
+- Backend: S3 bucket with versioning for locking, uses use_lockfile = true (no DynamoDB table)
 - State key pattern: `petclinic/{env}/terraform.tfstate`
 - Never store state locally in production
 - Use `terraform_remote_state` data source for cross-module references

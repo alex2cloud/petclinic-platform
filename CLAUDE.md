@@ -20,9 +20,9 @@ docs/                                # Architecture docs, runbooks, ADRs
 
 ## Terraform Conventions
 
-- **Provider:** AWS provider ~> 5.0, region eu-central-1
+- **Provider:** AWS provider ~> 6.49, region eu-central-1
 - **ECR:** Uses `aws_ecr_repository` in eu-central-1 with lifecycle policies, scan-on-push, and configurable tag immutability
-- **State:** S3 + DynamoDB locking, key pattern: `petclinic/{env}/terraform.tfstate`
+- **State:** Uses modern S3 with locking (without using DynamoDB), key pattern: `petclinic/{env}/terraform.tfstate`
 - **Modules:** All reusable modules in `terraform/modules/`. Environments call modules.
 - **Naming:** `petclinic-{env}-{resource}` (e.g., `petclinic-dev-vpc`, `petclinic-prod-eks`)
 - **Tagging:** Every resource MUST have tags: `Project=petclinic`, `Environment={dev|prod}`, `ManagedBy=terraform`

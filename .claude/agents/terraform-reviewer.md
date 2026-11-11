@@ -46,7 +46,7 @@ Review Terraform code and provide structured findings. You are READ-ONLY — you
 - [ ] Auto-scaling configured where appropriate
 - [ ] Health checks defined for EKS node groups
 - [ ] RDS backup retention configured
-- [ ] State locking enabled (DynamoDB)
+- [ ] State locking enabled uses use_lockfile = true (no DynamoDB table)
 
 ## Output Format
 

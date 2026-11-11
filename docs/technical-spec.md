@@ -72,13 +72,12 @@ These tags are applied via `default_tags` in the AWS provider configuration. Mod
 
 | Parameter | Value |
 |-----------|-------|
-| Backend Type | S3 with DynamoDB locking |
+| Backend Type | S3 locking without DynamoDB locking |
 | S3 Bucket | `petclinic-terraform-state-{account-id}` |
 | S3 Encryption | AES256 (SSE-S3) |
 | S3 Versioning | Enabled |
 | S3 Public Access | All blocked (4 settings) |
-| DynamoDB Table | `petclinic-terraform-locks` |
-| DynamoDB Partition Key | `LockID` (String) |
+| S3 Locking | Native lock file via use_lockfile = true (Terraform >= 1.10); no DynamoDB table |
 
 ### Per-Environment State Keys
 
@@ -89,7 +88,7 @@ These tags are applied via `default_tags` in the AWS provider configuration. Mod
 
 ### Bootstrap Script
 
-`scripts/bootstrap-state.sh` provisions the S3 bucket and DynamoDB table. It is:
+`scripts/bootstrap-state.sh` provisions the S3 bucket (without DynamoDB). It is:
 - Idempotent (safe to run multiple times)
 - Accepts `--region` parameter (default: `eu-central-1`)
 - Run once before `terraform init`
@@ -1014,7 +1013,7 @@ This is a learning project. Instance choices maximize AWS free tier eligibility.
 | EC2 Nodes (2x t4g.small) | $0 | $0 | Graviton free trial (750 hrs/mo until Dec 2026) |
 | RDS MySQL (db.t4g.micro) | $0 | $0 | RDS free tier (750 hrs/mo, 12 months) |
 | ALB | $0 | $0 | Free tier (750 hrs/mo, 12 months) |
-| S3 + DynamoDB (state) | $1 | $1 | Mostly free tier |
+| S3 (state) | $1 | $1 | Mostly free tier |
 | ECR Storage | ~$1 | ~$1 | 500 MB free, then $0.10/GB/month |
 | EBS (PVs — Prometheus, Grafana, Loki) | $2 | $2 | 30 GB gp2 free (12 months) |
 | Route 53 | $1 | $1 | $0.50/zone + queries |

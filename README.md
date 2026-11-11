@@ -57,7 +57,7 @@ petclinic-platform/
 │   └── update-image-tags.yml     # Commit image tag updates → ArgoCD deploys
 │
 ├── scripts/                      # Operational scripts
-│   ├── bootstrap-state.sh        # Create S3 bucket + DynamoDB for TF state
+│   ├── bootstrap-state.sh        # Create S3 bucket for TF state
 │   └── ecr-login.sh              # ECR authentication helper
 │
 └── docs/                         # Operational Documentation
@@ -74,7 +74,7 @@ petclinic-platform/
 | Layer | Tool | Details |
 |-------|------|---------|
 | Cloud | AWS | eu-central-1 |
-| IaC | Terraform >= 1.6 | AWS provider ~> 5.0, S3 + DynamoDB state |
+| IaC | Terraform >= 1.15.0 | AWS provider ~> 6.49, State backend by using S3 |
 | Cluster | Amazon EKS | Managed node groups, OIDC |
 | Registry | Amazon ECR | One repo per service per env, lifecycle policies, scan-on-push |
 | Database | Amazon RDS MySQL | Single-AZ both envs (cost optimization) |

@@ -191,7 +191,7 @@ Start a new Claude Code session in petclinic-platform/ and verify the full confi
 # EPIC E-1: Foundation & Remote State
 
 **Priority:** P0
-**Description:** Set up Terraform project structure, remote state backend (S3 + DynamoDB), provider configuration, and environment layout. This is the foundation everything else builds on.
+**Description:** Set up Terraform project structure, remote state backend (S3, without using DynamoDB), provider configuration, and environment layout. This is the foundation everything else builds on.
 **Blocked by:** None
 **Blocks:** E-2, E-3, E-4, E-5, E-6, E-7
 
@@ -220,7 +220,7 @@ Create the Terraform directory structure in petclinic-platform with separate env
 
 ---
 
-### PETPLAT-2: Create S3 bucket and DynamoDB table for Terraform state
+### PETPLAT-2: Create S3 bucket for Terraform state
 
 **Type:** Task
 **Priority:** P0
@@ -229,7 +229,7 @@ Create the Terraform directory structure in petclinic-platform with separate env
 **Labels:** terraform, foundation, aws
 
 **Description:**
-Create a bootstrap script that provisions the S3 bucket (versioning enabled, encryption enabled) and DynamoDB table (LockID partition key) used for Terraform remote state. This is a one-time setup done outside Terraform itself.
+Create a bootstrap script that provisions the S3 bucket (versioning enabled, encryption enabled) with locking (not use DynamoDB) used for Terraform remote state. This is a one-time setup done outside Terraform itself.
 
 **Technical Spec:** [Terraform State Backend](./technical-spec.md#terraform-state-backend)
 
@@ -238,7 +238,8 @@ Create a bootstrap script that provisions the S3 bucket (versioning enabled, enc
 - [ ] S3 bucket created with versioning enabled
 - [ ] S3 bucket has server-side encryption (AES256 or KMS)
 - [ ] S3 bucket has public access blocked (all 4 settings)
-- [ ] DynamoDB table created with `LockID` as partition key (String)
+
+- [ ] use_lockfile = true is set in backend.tf and the script create no DynamoDB table
 - [ ] Script is idempotent (safe to run multiple times)
 - [ ] Script accepts region as parameter (default: eu-central-1)
 
@@ -254,14 +255,14 @@ Create a bootstrap script that provisions the S3 bucket (versioning enabled, enc
 **Blocked by:** PETPLAT-2
 
 **Description:**
-Configure the S3 backend in `terraform/environments/dev/backend.tf` pointing to the state bucket with key `petclinic/dev/terraform.tfstate`. Configure DynamoDB locking.
+Configure the S3 backend in `terraform/environments/dev/backend.tf` pointing to the state bucket with key `petclinic/dev/terraform.tfstate`.
 
 **Technical Spec:** [Terraform State Backend](./technical-spec.md#terraform-state-backend)
 
 **Acceptance Criteria:**
 - [ ] `backend.tf` configured with S3 backend
 - [ ] State key: `petclinic/dev/terraform.tfstate`
-- [ ] DynamoDB table referenced for locking
+- [ ] use_lockfile = true is set in backend.tf
 - [ ] Encryption enabled
 - [ ] Region set to eu-central-1
 - [ ] `terraform init` succeeds
@@ -285,7 +286,7 @@ Configure the S3 backend in `terraform/environments/prod/backend.tf` with key `p
 **Acceptance Criteria:**
 - [ ] `backend.tf` configured with S3 backend
 - [ ] State key: `petclinic/prod/terraform.tfstate`
-- [ ] DynamoDB table referenced for locking
+- [ ] use_lockfile = true is set in backend.tf
 - [ ] Encryption enabled
 - [ ] `terraform init` succeeds
 
@@ -300,13 +301,13 @@ Configure the S3 backend in `terraform/environments/prod/backend.tf` with key `p
 **Labels:** terraform, foundation
 
 **Description:**
-Set up provider configuration and version constraints in both environment root modules. Pin Terraform >= 1.6.0 and AWS provider ~> 5.0.
+Set up provider configuration and version constraints in both environment root modules. Pin Terraform >= 1.15.0 and AWS provider ~> 6.49.
 
 **Technical Spec:** [General Project Parameters](./technical-spec.md#general-project-parameters)
 
 **Acceptance Criteria:**
-- [ ] `versions.tf` in both dev/ and prod/ with required_version >= 1.6.0
-- [ ] AWS provider source and version constraint (~> 5.0) defined
+- [ ] `versions.tf` in both dev/ and prod/ with required_version >= 1.15.0
+- [ ] AWS provider source and version constraint (~> 6.49) defined
 - [ ] `providers.tf` in both environments configuring AWS provider with `var.aws_region`
 - [ ] `variables.tf` defines aws_region variable (default: eu-central-1)
 - [ ] `variables.tf` defines environment variable (dev or prod)
@@ -2429,7 +2430,7 @@ Document Terraform state management procedures for common operational scenarios.
 - [ ] How to: remove a resource from state without destroying (`terraform state rm`)
 - [ ] How to: move a resource between modules (`terraform state mv`)
 - [ ] How to: recover from state corruption (S3 versioning rollback)
-- [ ] How to: handle state lock stuck (DynamoDB lock force-unlock)
+- [ ] How to: clear a stuck lock: terraform force-unlock <LOCK-ID>, or deleting the <key>.tflock object in S3
 - [ ] Warning: when NOT to use these commands
 
 ---
