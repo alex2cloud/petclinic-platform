@@ -43,8 +43,8 @@
 | Project Name | `petclinic` |
 | Naming Convention | `petclinic-{env}-{resource}` (e.g., `petclinic-dev-vpc`, `petclinic-prod-eks`) |
 | Environments | `dev`, `prod` |
-| Terraform Version | `>= 1.6.0` |
-| AWS Provider Version | `~> 5.0` |
+| Terraform Version | `>= 1.15.0` |
+| AWS Provider Version | `~> 6.49` |
 | Spring Boot Version | `4.0.1` (parent POM: `org.springframework.boot:spring-boot-starter-parent`) |
 | Spring Cloud Version | `2025.1.0` (Oakwood) |
 | Java Version | `17` |

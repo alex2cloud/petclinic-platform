@@ -11,10 +11,12 @@
     ]
   },
   "enabledMcpjsonServers": [
-    "awslabs.terraform-mcp-server",
+    "terraform",
     "aws-knowledge-mcp",
     "awslabs.aws-pricing-mcp-server",
     "context7",
-    "atlassian"
-  ]
+    "atlassian",
+    "terraform"
+  ],
+  "enableAllProjectMcpServers": true
 }

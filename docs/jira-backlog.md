@@ -84,7 +84,7 @@ Create `.mcp.json` at the project root with all MCP servers needed for the infra
 
 **Acceptance Criteria:**
 - [ ] `.mcp.json` at petclinic-platform root
-- [ ] Terraform MCP server configured (`awslabs.terraform-mcp-server`)
+- [ ] Terraform MCP server configured (`terraform`)
 - [ ] AWS Knowledge MCP configured (`aws-knowledge-mcp`)
 - [ ] AWS Pricing MCP configured (`awslabs.aws-pricing-mcp-server`, region: eu-central-1)
 - [ ] Context7 MCP configured (library documentation)

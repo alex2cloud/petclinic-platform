@@ -32,7 +32,7 @@ aws-credentials
 *.swp
 *.swo
 *~
-.project
+.projec
 .classpath
 .settings/
 

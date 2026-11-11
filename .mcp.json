@@ -1,14 +1,17 @@
 {
   "mcpServers": {
-    "awslabs.terraform-mcp-server": {
-      "type": "stdio",
-      "command": "uvx",
+    "terraform": {
+      "command": "docker",
       "args": [
-        "awslabs.terraform-mcp-server@latest"
-      ],
-      "env": {
-        "FASTMCP_LOG_LEVEL": "ERROR"
-      }
+        "run",
+        "-i",
+        "--rm",
+        "-v",
+        "/Users/alex/Documents/2026/learning/ai-devops-eks/petclinic-platform/terraform:/workspace",
+        "-w",
+        "/workspace",
+        "hashicorp/terraform-mcp-server"
+      ]
     },
     "aws-knowledge-mcp": {
       "type": "http",
